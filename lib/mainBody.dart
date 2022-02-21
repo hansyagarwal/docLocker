@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
+import 'package:path/path.dart' as p;
 
 class mainBody extends StatefulWidget {
   @override
@@ -8,38 +9,32 @@ class mainBody extends StatefulWidget {
 }
 
 class _mainBodyState extends State<mainBody> {
+
+  String newFolder ="";
+  List files = [];
+
+  Future<Directory> getDir() async{
+    final dir = Directory((await getExternalStorageDirectory())!.path + '/docLock');
+    return dir;
+  }
+
+  void listOfFiles() async {
+    //var files1 = Directory("/storage/emulated/0/Android/data/com.hansyyyyy.doclocker/files/docLock").listSync();
+    var storagePath = await getDir();
+    var files1 = storagePath.listSync();
+    for(var f in files1){
+      files.add(p.basename(f.path));
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    listOfFiles();
+  }
+
   @override
   Widget build(BuildContext context) {
-
-    String newFolder ="";
-    String directory;
-    List files = ['asd','asdaa','aa'];
-
-    // void getDir() async{
-    //   final dir = Directory((await getExternalStorageDirectory())!.path + '/docLock');
-    //   return dir;
-    // }
-
-    void listOfFiles() async {
-      //directory = (await getApplicationDocumentsDirectory()).path;
-      //print(directory);
-      // directory = (await getExternalStorageDirectory())!.path;
-      // setState(() {
-      //   //files = (getDir()).listSync();
-      //   files = Directory("$directory/docLock").listSync();
-      //   print(files);
-      // });
-      // setState(() async{
-      //
-      //   //files = Directory("/storage/emulated/0/Android/data/com.hansyyyyy.doclocker/files/docLock").listSync();
-      // });
-    }
-
-    setState(() {
-      listOfFiles();
-    });
-
-
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         child: const Icon(

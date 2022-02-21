@@ -20,7 +20,6 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     checkSetup();
   }
@@ -29,23 +28,16 @@ class _MyAppState extends State<MyApp> {
     print('hello');
     final prefs = await SharedPreferences.getInstance();
     final String? checkStartup = prefs.getString('firstTime');
-    //var status = await Permission.manageExternalStorage.request();
     if(checkStartup == null){
       await prefs.setString('firstTime', 'yes');
       print('opening for first time');
-      //createFolder('docLock');
       var path = await createFolder('docLock');
       print(path);
     } else {
       print('no');
     }
-    // if(status.isGranted){
-    //
-    // }else if(status.isDenied){
-    //   openAppSettings();
-    // }
   }
-  
+
   Future<String> createFolder(String fName) async {
     final dir = Directory((await getExternalStorageDirectory())!.path + '/$fName');
     var status = await Permission.storage.status;
