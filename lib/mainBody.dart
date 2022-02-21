@@ -1,14 +1,48 @@
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
+import 'dart:io';
 
-class mainBody extends StatelessWidget {
+class mainBody extends StatefulWidget {
+  @override
+  State<mainBody> createState() => _mainBodyState();
+}
+
+class _mainBodyState extends State<mainBody> {
   @override
   Widget build(BuildContext context) {
 
     String newFolder ="";
+    String directory;
+    List files = ['asd','asdaa','aa'];
+
+    // void getDir() async{
+    //   final dir = Directory((await getExternalStorageDirectory())!.path + '/docLock');
+    //   return dir;
+    // }
+
+    void listOfFiles() async {
+      //directory = (await getApplicationDocumentsDirectory()).path;
+      //print(directory);
+      // directory = (await getExternalStorageDirectory())!.path;
+      // setState(() {
+      //   //files = (getDir()).listSync();
+      //   files = Directory("$directory/docLock").listSync();
+      //   print(files);
+      // });
+      // setState(() async{
+      //
+      //   //files = Directory("/storage/emulated/0/Android/data/com.hansyyyyy.doclocker/files/docLock").listSync();
+      // });
+    }
+
+    setState(() {
+      listOfFiles();
+    });
+
 
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        child: Icon(
+        child: const Icon(
             Icons.upload_file
         ),
         onPressed: () {
@@ -63,6 +97,24 @@ class mainBody extends StatelessWidget {
             ),
           )
         ],
+      ),
+      body: Container(
+        child: Column(
+          children: [
+            Expanded(
+              child: Container(
+                child: ListView.builder(
+                    itemCount: files.length,
+                    itemBuilder: (BuildContext context, int index){
+                      //print(files[index].path);
+                      //print('-------');
+                      return Text(
+                        files[index].toString(),
+                        style : TextStyle(color: Colors.white), );
+                    }),
+              ))
+          ],
+        ),
       ),
     );
   }
