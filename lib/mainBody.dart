@@ -21,10 +21,13 @@ class _mainBodyState extends State<mainBody> {
   void listOfFiles() async {
     //var files1 = Directory("/storage/emulated/0/Android/data/com.hansyyyyy.doclocker/files/docLock").listSync();
     var storagePath = await getDir();
-    var files1 = storagePath.listSync();
-    for(var f in files1){
-      files.add(p.basename(f.path));
-    }
+
+    setState(() {
+      var files1 = storagePath.listSync();
+      for(var f in files1){
+        files.add(p.basename(f.path));
+      }
+    });
   }
 
   @override
@@ -53,8 +56,8 @@ class _mainBodyState extends State<mainBody> {
           Padding(
             padding: EdgeInsets.only(right: 20),
             child: GestureDetector(
-              onTap: (){
-                showDialog<String>(
+              onTap: () async{
+               await showDialog<String>(
                     context: context,
                     builder: (BuildContext context) => AlertDialog(
                       title: const Text(
