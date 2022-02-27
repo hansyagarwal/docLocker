@@ -13,14 +13,14 @@ class _mainBodyState extends State<mainBody> {
   String newFolder ="";
   List files = [];
 
-  Future<Directory> getDir() async{
-    final dir = Directory((await getExternalStorageDirectory())!.path + '/docLock');
+  Future<Directory> getDir(String fName) async{
+    final dir = Directory((await getExternalStorageDirectory())!.path + '/$fName');
     return dir;
   }
 
   void listOfFiles() async {
     //var files1 = Directory("/storage/emulated/0/Android/data/com.hansyyyyy.doclocker/files/docLock").listSync();
-    var storagePath = await getDir();
+    var storagePath = await getDir('docLock');
 
     setState(() {
       var files1 = storagePath.listSync();
@@ -78,8 +78,12 @@ class _mainBodyState extends State<mainBody> {
                           child: Text('Cancel'),
                         ),
                         TextButton(
-                          onPressed: () {
+                          onPressed: () async {
                             print(newFolder);
+                            var storagePath = await getDir('docLock/$newFolder');
+                            storagePath.create();
+                            files = [];
+                            listOfFiles();
                             Navigator.pop(context,'Create');
                           },
                           child: Text('Create'),
@@ -106,9 +110,15 @@ class _mainBodyState extends State<mainBody> {
                     itemBuilder: (BuildContext context, int index){
                       //print(files[index].path);
                       //print('-------');
-                      return Text(
-                        files[index].toString(),
-                        style : TextStyle(color: Colors.white), );
+                      return Padding(
+                        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                        child: Text(
+                          files[index].toString(),
+                          style : TextStyle(
+                              color: Colors.white,
+                            fontSize: 20,
+                          ), ),
+                      );
                     }),
               ))
           ],
